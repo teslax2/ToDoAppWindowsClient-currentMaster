@@ -14,6 +14,7 @@ namespace ToDoAppLambda.Model
 
         Task<ItemResponse> PutItem(Item item);
         Task<ItemResponse> GetItem(Item item);
+        Task<ItemResponse> GetItems(Item item);
         Task<ItemResponse> UpdateItem(Item item);
         Task<ItemResponse> DeleteItem(Item item);
     }

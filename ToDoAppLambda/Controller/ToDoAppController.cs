@@ -25,7 +25,10 @@ namespace ToDoAppLambda.Controller
                 case OperationType.Delete:
                     return await dbRequest.DeleteItem(request.Data);
                 case OperationType.Get:
-                    return await dbRequest.GetItem(request.Data);
+                    if(string.IsNullOrEmpty(request.Data.Id))
+                        return await dbRequest.GetItems(request.Data);
+                    else
+                       return await dbRequest.GetItem(request.Data);
                 case OperationType.Put:
                     return await dbRequest.PutItem(request.Data);
                 case OperationType.Update:

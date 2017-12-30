@@ -27,8 +27,10 @@ namespace ToDoAppLambda.Model
             {
                 TableName = tableName,
                 Key = new Dictionary<string, AttributeValue>() {
+                    { "User", new AttributeValue { S = user } },
                     { "TaskId", new AttributeValue { S = id } },
             }
+
             };
             var result = await client.DeleteItemAsync(request);
             return new ItemResponse() { Status = result.HttpStatusCode.ToString() };
@@ -42,22 +44,59 @@ namespace ToDoAppLambda.Model
             {
                 TableName = tableName,
                 Key = new Dictionary<string, AttributeValue>() {
+                    { "User", new AttributeValue { S = user } },
                     { "TaskId", new AttributeValue { S = id } },
                 },
+                ConsistentRead = true,
             };
             var result = await client.GetItemAsync(request);
-            return new ItemResponse() {
-                Data = new Item()
-                {
-                    Title = result.Item["Title"].S,
-                    Date = result.Item["Date"].S,
-                    Message = result.Item["Message"].S,
-                    Status = Int32.Parse(result.Item["Status"].N),
-                    Id = result.Item["TaskId"].S,
-                    User = result.Item["User"].S,
-                    Alarm = result.Item["Alarm"].S
+            var row = new Item()
+            {
+                Title = result.Item["Title"].S,
+                Date = result.Item["Date"].S,
+                Message = result.Item["Message"].S,
+                Status = Int32.Parse(result.Item["Status"].N),
+                Id = result.Item["TaskId"].S,
+                User = result.Item["User"].S,
+                Alarm = result.Item["Alarm"].S
+            };
+            var listOfRows = new List<Item>();
+            listOfRows.Add(row);
+            return new ItemResponse() { Data = listOfRows, Status = result.HttpStatusCode.ToString() };
+        }
+
+        public async Task<ItemResponse> GetItems(Item item)
+        {
+            var user = item.User;
+            var request = new QueryRequest
+            {
+                TableName = tableName,
+                ExpressionAttributeNames = new Dictionary<string, string>(){ { "#U", "User" } },
+                KeyConditionExpression = "#U = :v_User",
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue> {
+                    {":v_User", new AttributeValue { S =  user }},
                 },
-                Status = result.HttpStatusCode.ToString() };
+                ConsistentRead = true
+            };
+
+            var result = await client.QueryAsync(request);
+            var listOfRows = new List<Item>();
+
+            foreach (Dictionary<string, AttributeValue> row in result.Items)
+            {
+                var rowToAdd = new Item()
+                {
+                    Title = row["Title"].S,
+                    Date = row["Date"].S,
+                    Message = row["Message"].S,
+                    Status = Int32.Parse(row["Status"].N),
+                    Id = row["TaskId"].S,
+                    User = row["User"].S,
+                    Alarm = row["Alarm"].S
+                };
+                listOfRows.Add(rowToAdd);
+            }
+            return new ItemResponse() { Data = listOfRows, Status = result.HttpStatusCode.ToString() };
         }
 
         public async Task<ItemResponse> PutItem(Item item)
@@ -79,6 +118,7 @@ namespace ToDoAppLambda.Model
             {
                 TableName = tableName,
                 Key = new Dictionary<string, AttributeValue>() {
+                    { "User", new AttributeValue { S = user } },
                     { "TaskId", new AttributeValue { S = id } },
                 },
             };

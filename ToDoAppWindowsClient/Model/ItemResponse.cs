@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ToDoAppLambda.Model
+namespace ToDoAppWindowsClient.Model
 {
     class ItemResponse
     {

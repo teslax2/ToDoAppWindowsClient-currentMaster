@@ -13,8 +13,6 @@ namespace ToDoAppLambda.Model
 
         public ItemRequest()
         {
-            TableName = "";
-            Operation = OperationType.Get;
             Data = new Item();
         }
     }

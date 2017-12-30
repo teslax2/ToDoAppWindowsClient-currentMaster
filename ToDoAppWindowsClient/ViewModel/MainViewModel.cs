@@ -21,7 +21,7 @@ namespace ToDoAppWindowsClient.ViewModel
             creds.Read();
         }
 
-        public async Task<bool> CheckPasswordAsync(string userName, string password)
+        public async Task<string> CheckPasswordAsync(string userName, string password)
         {
             try
             {
@@ -36,12 +36,12 @@ namespace ToDoAppWindowsClient.ViewModel
 
                 AdminInitiateAuthResponse authResp = await client.AdminInitiateAuthAsync(authReq);
 
-                return true;
+                return authResp.AuthenticationResult.IdToken;
             }
             catch (Exception ex)
             {
                 log.Error("couldnt log in" + Environment.NewLine + ex.Message);
-                return false;
+                return string.Empty;
             }
         }
     }

@@ -21,10 +21,14 @@ namespace ToDoAppLambda.Model
         public async Task<ItemResponse> DeleteItem(Item item)
         {
             var id = item.Id;
+            var user = item.User;
+
             var request = new DeleteItemRequest
             {
                 TableName = tableName,
-                Key = new Dictionary<string, AttributeValue>() { { "TaskId", new AttributeValue { N = id.ToString() } }  },
+                Key = new Dictionary<string, AttributeValue>() {
+                    { "TaskId", new AttributeValue { S = id } },
+            }
             };
             var result = await client.DeleteItemAsync(request);
             return new ItemResponse() { Status = result.HttpStatusCode.ToString() };
@@ -33,10 +37,13 @@ namespace ToDoAppLambda.Model
         public async Task<ItemResponse> GetItem(Item item)
         {
             var id = item.Id;
+            var user = item.User;
             var request = new GetItemRequest
             {
                 TableName = tableName,
-                Key = new Dictionary<string, AttributeValue>() { { "TaskId", new AttributeValue { N = id.ToString() } } },
+                Key = new Dictionary<string, AttributeValue>() {
+                    { "TaskId", new AttributeValue { S = id } },
+                },
             };
             var result = await client.GetItemAsync(request);
             return new ItemResponse() {
@@ -46,7 +53,9 @@ namespace ToDoAppLambda.Model
                     Date = result.Item["Date"].S,
                     Message = result.Item["Message"].S,
                     Status = Int32.Parse(result.Item["Status"].N),
-                    Id = Int32.Parse(result.Item["TaskId"].N)
+                    Id = result.Item["TaskId"].S,
+                    User = result.Item["User"].S,
+                    Alarm = result.Item["Alarm"].S
                 },
                 Status = result.HttpStatusCode.ToString() };
         }
@@ -65,10 +74,13 @@ namespace ToDoAppLambda.Model
         public async Task<ItemResponse> UpdateItem(Item item)
         {
             var id = item.Id;
+            var user = item.User;
             var request = new UpdateItemRequest
             {
                 TableName = tableName,
-                Key = new Dictionary<string, AttributeValue>() { { "TaskId", new AttributeValue { N = id.ToString() } } },
+                Key = new Dictionary<string, AttributeValue>() {
+                    { "TaskId", new AttributeValue { S = id } },
+                },
             };
             var result = await client.UpdateItemAsync(request);
             return new ItemResponse() { Status = result.HttpStatusCode.ToString() };

@@ -39,7 +39,8 @@ namespace ToDoAppWindowsClient.View
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.LoggedIn = await _viewModel.CheckPasswordAsync(UserNameTextBox.Text, PasswordTextBox.Password);
+            sessionId.Text = await _viewModel.CheckPasswordAsync(UserNameTextBox.Text, PasswordTextBox.Password);
+            System.Diagnostics.Debug.WriteLine(sessionId.Text);
         }
 
     }

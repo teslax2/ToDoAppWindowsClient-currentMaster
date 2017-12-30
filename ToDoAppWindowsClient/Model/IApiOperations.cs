@@ -11,10 +11,11 @@ namespace ToDoAppWindowsClient.Model
     {
         RestClient _restClient { get; set; }
         RestRequest _restReqest { get; set; }
+        string _tableName { get; set; }
 
-        Task<IRestResponse> Delete(Item item);
-        Task<IRestResponse> Put(Item item);
-        Task<IRestResponse> Update(Item item);
-        Task<IRestResponse> Get(Item item);
+        Task<IRestResponse> Delete(ItemRequest item);
+        Task<IRestResponse> Put(ItemRequest item);
+        Task<IRestResponse> Update(ItemRequest item);
+        Task<IRestResponse> Get(ItemRequest item);
     }
 }

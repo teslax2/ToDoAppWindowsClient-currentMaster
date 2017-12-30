@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
+using Newtonsoft.Json;
 
 namespace ToDoAppWindowsClient.Model
 {
@@ -11,32 +12,38 @@ namespace ToDoAppWindowsClient.Model
     {
         public RestClient _restClient { get; set; }
         public RestRequest _restReqest { get; set; }
+        public string  _tableName {get;set;}
 
         public ApiOperations()
         {
             _restClient = new RestClient("https://kqticr5cwd.execute-api.eu-west-1.amazonaws.com/firstTest");
-            _restReqest = new RestRequest();
         }
 
-        public Task<IRestResponse> Delete(Item item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IRestResponse> Get(Item item)
+        public async Task<IRestResponse> Delete(ItemRequest item)
         {
             _restReqest.AddObject(item);
             return await _restClient.ExecuteTaskAsync(_restReqest);
         }
 
-        public Task<IRestResponse> Put(Item item)
+        public async Task<IRestResponse> Get(ItemRequest item)
         {
-            throw new NotImplementedException();
+
+            _restReqest = new RestRequest(Method.POST);
+            _restReqest.RequestFormat = DataFormat.Json;
+            _restReqest.AddBody(item);
+            return await _restClient.ExecuteTaskAsync(_restReqest);
         }
 
-        public Task<IRestResponse> Update(Item item)
+        public async Task<IRestResponse> Put(ItemRequest item)
         {
-            throw new NotImplementedException();
+            _restReqest.AddObject(item);
+            return await _restClient.ExecuteTaskAsync(_restReqest);
+        }
+
+        public async Task<IRestResponse> Update(ItemRequest item)
+        {
+            _restReqest.AddObject(item);
+            return await _restClient.ExecuteTaskAsync(_restReqest);
         }
     }
 }

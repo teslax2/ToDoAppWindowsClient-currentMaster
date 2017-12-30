@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToDoAppWindowsClient.View"
+        xmlns:viewModel="clr-namespace:ToDoAppWindowsClient.ViewModel"
         mc:Ignorable="d"
-        Title="ToDoList" Height="300" Width="300">
-    <Grid>
-        
+        Title="ToDoList" Height="300" Width="300" Loaded="Window_Loaded">
+    <Window.Resources>
+        <viewModel:ToDoListViewModel x:Key="ViewModel"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource ViewModel}">
+        <ListView ItemsSource="{Binding Items}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBox Text="{Binding Title}"/>
+                        <TextBox Text="{Binding Message}"/>
+                        <WrapPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Date}"/>
+                            <TextBox Text="{Binding Alarm}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

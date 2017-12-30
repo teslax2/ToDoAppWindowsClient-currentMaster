@@ -43,5 +43,10 @@ namespace ToDoAppWindowsClient.View
             System.Diagnostics.Debug.WriteLine(sessionId.Text);
         }
 
+        private void OpenTasks_Click(object sender, RoutedEventArgs e)
+        {
+            ToDoList toDoListWindow = new ToDoList();
+            toDoListWindow.Show();
+        }
     }
 }

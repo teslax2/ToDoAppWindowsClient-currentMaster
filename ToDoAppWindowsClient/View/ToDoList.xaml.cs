@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ToDoAppWindowsClient.ViewModel;
 
 namespace ToDoAppWindowsClient.View
 {
@@ -19,9 +20,16 @@ namespace ToDoAppWindowsClient.View
     /// </summary>
     public partial class ToDoList : Window
     {
+        private ToDoListViewModel _viewModel;
         public ToDoList()
         {
             InitializeComponent();
+            _viewModel = FindResource("ViewModel") as ToDoListViewModel;
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _viewModel.GetToDoAll();
         }
     }
 }

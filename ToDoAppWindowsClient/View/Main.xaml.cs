@@ -26,6 +26,8 @@ namespace ToDoAppWindowsClient.View
     public partial class Main : Window
     {
         private MainViewModel _viewModel = new MainViewModel();
+        private string _sessionId;
+        private string _userName;
         public Main()
         {
             InitializeComponent();
@@ -39,13 +41,13 @@ namespace ToDoAppWindowsClient.View
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            sessionId.Text = await _viewModel.CheckPasswordAsync(UserNameTextBox.Text, PasswordTextBox.Password);
-            System.Diagnostics.Debug.WriteLine(sessionId.Text);
+            _sessionId = await _viewModel.CheckPasswordAsync(UserNameTextBox.Text, PasswordTextBox.Password);
+            _userName = UserNameTextBox.Text;
         }
 
         private void OpenTasks_Click(object sender, RoutedEventArgs e)
         {
-            ToDoList toDoListWindow = new ToDoList();
+            ToDoList toDoListWindow = new ToDoList(_sessionId, _userName);
             toDoListWindow.Show();
         }
     }

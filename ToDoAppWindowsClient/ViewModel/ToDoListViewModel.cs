@@ -14,7 +14,7 @@ namespace ToDoAppWindowsClient.ViewModel
 {
    class ToDoListViewModel:INotifyPropertyChanged
     {
-        private ApiOperations _api = new ApiOperations();
+        private ApiOperations _api;
         public event PropertyChangedEventHandler PropertyChanged;
         public string CurrentUser { get; private set; }
         private readonly ObservableCollection<Item> _items = new ObservableCollection<Item>();
@@ -24,7 +24,12 @@ namespace ToDoAppWindowsClient.ViewModel
 
         public ToDoListViewModel()
         {
-            CurrentUser = "wiechu";
+        }
+
+        public ToDoListViewModel(string token, string user)
+        {
+            _api = new ApiOperations(token);
+            CurrentUser = user;
             _api._tableName = "ToDoTable";
         }
 

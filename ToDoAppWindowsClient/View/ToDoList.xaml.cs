@@ -21,10 +21,11 @@ namespace ToDoAppWindowsClient.View
     public partial class ToDoList : Window
     {
         private ToDoListViewModel _viewModel;
-        public ToDoList()
+        public ToDoList(string token, string user)
         {
             InitializeComponent();
-            _viewModel = FindResource("ViewModel") as ToDoListViewModel;
+            _viewModel = new ToDoListViewModel(token, user);
+            this.DataContext = _viewModel;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)

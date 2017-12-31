@@ -24,7 +24,6 @@
             <PasswordBox Name="PasswordTextBox" />
             <Button Name="LoginButton" Click="LoginButton_Click" Content="Login" />
         </StackPanel>
-        <TextBlock x:Name="sessionId" Grid.Column="1" Grid.Row="2" Foreground="Black" FontSize="10" Text="dupauduadpfuapfudasfudpoasufodsuofdpasfdsfds" VerticalAlignment="Top" Height="69"/>
         <Button Name="OpenTasks" Grid.Column="0" Grid.Row="2" Content="Tasks" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="OpenTasks_Click"/>
         <Button Name="SignUpButton" Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="SignUpButton_Click" Content="Sign Up" />
     </Grid>
